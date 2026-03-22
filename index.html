@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gráfica Master Print</title>
 
+<!-- BIBLIOTECA PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 body {
   font-family: Arial;
@@ -13,15 +16,14 @@ body {
   padding: 20px;
 }
 
-h1 {
-  font-size: 22px;
-  margin-bottom: 5px;
-}
+h1 { font-size: 22px; }
+h2 { font-size: 14px; color: #94a3b8; margin-bottom: 20px; }
 
-h2 {
-  font-size: 14px;
-  color: #94a3b8;
-  margin-bottom: 20px;
+.card {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
 }
 
 .grid {
@@ -31,9 +33,7 @@ h2 {
 }
 
 @media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+  .grid { grid-template-columns: 1fr; }
 }
 
 .field {
@@ -42,9 +42,8 @@ h2 {
 }
 
 label {
-  font-size: 13px;
+  font-size: 12px;
   color: #94a3b8;
-  margin-bottom: 4px;
 }
 
 input {
@@ -53,64 +52,54 @@ input {
   border: none;
 }
 
-.calcular {
-  width: 100%;
-  background: #38bdf8;
-  padding: 15px;
-  margin-top: 15px;
-  border-radius: 10px;
+button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
   font-weight: bold;
+  cursor: pointer;
 }
+
+.calcular { background: #38bdf8; width: 100%; margin-top: 10px; }
+.enviar { background: #25d366; color: white; }
+.salvar { background: #22c55e; color: white; }
+.limpar { background: #ef4444; color: white; }
+.pdf { background: #f59e0b; color: white; }
 
 .total {
   font-size: 32px;
-  font-weight: bold;
-  margin-top: 20px;
   color: #38bdf8;
+  margin-top: 10px;
 }
 
 .result-grid {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
 }
 
-.actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.actions button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
-}
-
-.limpar { background: #ef4444; color: white; }
-.salvar { background: #22c55e; color: white; }
-.enviar { background: #25d366; color: white; }
-
-.card {
-  background: #1e293b;
-  padding: 15px;
-  border-radius: 12px;
-}
-
-.historico {
-  margin-top: 20px;
+.lista {
   font-size: 13px;
-  color: #cbd5f5;
+  margin-top: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Gráfica Masterprint</h1>
-<h2>Calculadora de Orçamento</h2>
+<h1>Gráfica Master Print</h1>
+<h2>Sistema de Orçamentos</h2>
+
+<div class="card">
+  <div class="field">
+    <label>Nome do Cliente</label>
+    <input id="cliente">
+  </div>
+
+  <div class="field">
+    <label>Telefone</label>
+    <input id="telefone">
+  </div>
+</div>
 
 <div class="card">
 
@@ -138,11 +127,6 @@ input {
   </div>
 
   <div class="field">
-    <label>Desperdício (%)</label>
-    <input id="desperdicio" value="0">
-  </div>
-
-  <div class="field">
     <label>Margem (%)</label>
     <input id="margem" value="20">
   </div>
@@ -153,79 +137,149 @@ input {
 <div class="total" id="total">R$ 0,00</div>
 
 <div class="result-grid">
-  <div id="unitario">Unitário: R$ 0,00</div>
-  <div id="area">Área: 0 m²</div>
+  <div id="unitario">Unitário</div>
+  <div id="area">Área</div>
 </div>
 
-<div class="actions">
+<div class="grid" style="margin-top:10px;">
   <button class="limpar" onclick="limpar()">Limpar</button>
   <button class="salvar" onclick="salvar()">Salvar</button>
   <button class="enviar" onclick="enviar()">Enviar</button>
 </div>
 
+<button class="pdf" style="width:100%; margin-top:10px;" onclick="gerarPDF()">GERAR PDF PROFISSIONAL</button>
+
 </div>
 
-<div class="historico" id="historico"></div>
+<div class="card">
+  <b>Histórico</b>
+  <div id="lista" class="lista"></div>
+</div>
 
 <script>
-let historico = JSON.parse(localStorage.getItem("historico")) || [];
+let lista = JSON.parse(localStorage.getItem("orcamentos")) || [];
 
 function calcular() {
   let l = largura.value / 100;
   let a = altura.value / 100;
   let q = quantidade.value;
   let v = valor.value;
-  let d = desperdicio.value / 100;
   let m = margem.value / 100;
 
   let area = l * a;
-  let areaFinal = area * (1 + d);
-  let preco = areaFinal * v;
-  let precoFinal = preco * (1 + m);
-  let total = precoFinal * q;
+  let unitario = (area * v) * (1 + m);
+  let total = unitario * q;
 
   total = isNaN(total) ? 0 : total;
 
-  document.getElementById("total").innerHTML = "R$ " + total.toFixed(2);
-  document.getElementById("unitario").innerHTML = "Unitário: R$ " + precoFinal.toFixed(2);
-  document.getElementById("area").innerHTML = "Área: " + area.toFixed(2) + " m²";
+  window.resultado = {
+    cliente: cliente.value,
+    telefone: telefone.value,
+    total,
+    unitario,
+    area,
+    data: new Date().toLocaleString()
+  };
 
-  window.resultado = { total, precoFinal, area, data: new Date().toLocaleString() };
+  totalEl.innerHTML = "R$ " + total.toFixed(2);
+  unitarioEl.innerHTML = "Unitário: R$ " + unitario.toFixed(2);
+  areaEl.innerHTML = "Área: " + area.toFixed(2) + " m²";
+}
+
+const totalEl = document.getElementById("total");
+const unitarioEl = document.getElementById("unitario");
+const areaEl = document.getElementById("area");
+
+function salvar() {
+  if (!window.resultado) return alert("Calcule primeiro");
+
+  lista.push(window.resultado);
+  localStorage.setItem("orcamentos", JSON.stringify(lista));
+  render();
+}
+
+function enviar() {
+  if (!window.resultado) return alert("Calcule primeiro");
+
+  let msg =
+`Gráfica Master Print
+
+Cliente: ${window.resultado.cliente}
+Total: R$ ${window.resultado.total.toFixed(2)}
+Unitário: R$ ${window.resultado.unitario.toFixed(2)}
+Área: ${window.resultado.area.toFixed(2)} m²
+Data: ${window.resultado.data}`;
+
+  let url = "https://wa.me/55" + telefone.value + "?text=" + encodeURIComponent(msg);
+  window.open(url);
 }
 
 function limpar() {
   document.querySelectorAll("input").forEach(i => i.value = "");
   margem.value = 20;
   quantidade.value = 1;
-  total.innerHTML = "R$ 0,00";
+  totalEl.innerHTML = "R$ 0,00";
 }
 
-function salvar() {
-  if (!window.resultado) return alert("Calcule primeiro!");
-
-  historico.push(window.resultado);
-  localStorage.setItem("historico", JSON.stringify(historico));
-  renderHistorico();
-}
-
-function enviar() {
-  if (!window.resultado) return alert("Calcule primeiro!");
-
-  let msg = `Gráfica Masterprint\n\nOrçamento:\nTotal: R$ ${window.resultado.total.toFixed(2)}\nUnitário: R$ ${window.resultado.precoFinal.toFixed(2)}\nÁrea: ${window.resultado.area.toFixed(2)} m²\nData: ${window.resultado.data}`;
-
-  let url = "https://wa.me/?text=" + encodeURIComponent(msg);
-  window.open(url);
-}
-
-function renderHistorico() {
-  let html = "<b>Histórico:</b><br>";
-  historico.slice(-5).reverse().forEach(o => {
-    html += `R$ ${o.total.toFixed(2)} - ${o.data}<br>`;
+function render() {
+  let html = "";
+  lista.slice(-5).reverse().forEach(o => {
+    html += `${o.cliente || "Sem nome"} - R$ ${o.total.toFixed(2)}<br>`;
   });
-  document.getElementById("historico").innerHTML = html;
+  document.getElementById("lista").innerHTML = html;
 }
 
-renderHistorico();
+function gerarPDF() {
+  if (!window.resultado) return alert("Calcule primeiro");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let y = 20;
+
+  doc.setFontSize(18);
+  doc.text("Gráfica Master Print", 20, y);
+
+  y += 8;
+  doc.setFontSize(12);
+  doc.text("Orçamento Profissional", 20, y);
+
+  y += 15;
+  doc.line(20, y, 190, y);
+
+  y += 10;
+  doc.text("Cliente: " + (window.resultado.cliente || "Não informado"), 20, y);
+
+  y += 8;
+  doc.text("Telefone: " + (window.resultado.telefone || "-"), 20, y);
+
+  y += 8;
+  doc.text("Data: " + window.resultado.data, 20, y);
+
+  y += 15;
+  doc.line(20, y, 190, y);
+
+  y += 10;
+  doc.text("Área:", 20, y);
+  doc.text(window.resultado.area.toFixed(2) + " m²", 150, y);
+
+  y += 8;
+  doc.text("Valor Unitário:", 20, y);
+  doc.text("R$ " + window.resultado.unitario.toFixed(2), 150, y);
+
+  y += 15;
+  doc.setFontSize(16);
+  doc.text("TOTAL:", 20, y);
+  doc.text("R$ " + window.resultado.total.toFixed(2), 150, y);
+
+  y += 20;
+  doc.setFontSize(10);
+  doc.text("Orçamento válido por 5 dias.", 20, y);
+
+  doc.save("orcamento_masterprint.pdf");
+}
+
+render();
 </script>
 
 </body>
