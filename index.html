@@ -2,7 +2,8 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Calculadora de Adesivo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gráfica Masterprint</title>
 
 <style>
 body {
@@ -12,40 +13,53 @@ body {
   padding: 20px;
 }
 
+h1 {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
 h2 {
+  font-size: 14px;
+  color: #94a3b8;
   margin-bottom: 20px;
 }
 
 .grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
-.grid input {
-  flex: 1;
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 4px;
 }
 
 input {
-  width: 100%;
   padding: 12px;
   border-radius: 8px;
   border: none;
-  margin-bottom: 10px;
-}
-
-button {
-  padding: 15px;
-  border-radius: 10px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
 }
 
 .calcular {
   width: 100%;
   background: #38bdf8;
-  font-size: 18px;
-  margin-top: 10px;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  font-weight: bold;
 }
 
 .total {
@@ -69,6 +83,10 @@ button {
 
 .actions button {
   flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
 }
 
 .limpar { background: #ef4444; color: white; }
@@ -80,50 +98,78 @@ button {
   padding: 15px;
   border-radius: 12px;
 }
+
+.historico {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #cbd5f5;
+}
 </style>
 </head>
 
 <body>
 
-<h2>Calculadora de Adesivo</h2>
+<h1>Gráfica Masterprint</h1>
+<h2>Calculadora de Orçamento</h2>
 
 <div class="card">
 
-  <!-- LINHA 1 -->
-  <div class="grid">
-    <input id="largura" placeholder="Largura (cm)">
-    <input id="altura" placeholder="Altura (cm)">
-    <input id="quantidade" placeholder="Qtd" value="1">
+<div class="grid">
+  <div class="field">
+    <label>Largura (cm)</label>
+    <input id="largura">
   </div>
 
-  <!-- LINHA 2 -->
-  <div class="grid">
-    <input id="valor" placeholder="Valor m²">
-    <input id="desperdicio" placeholder="Desperdício %" value="0">
-    <input id="margem" placeholder="Margem %" value="0">
+  <div class="field">
+    <label>Altura (cm)</label>
+    <input id="altura">
   </div>
 
-  <!-- BOTÃO -->
-  <button class="calcular" onclick="calcular()">CALCULAR</button>
+  <div class="field">
+    <label>Quantidade</label>
+    <input id="quantidade" value="1">
+  </div>
+</div>
 
-  <!-- RESULTADO -->
-  <div class="total" id="total">R$ 0,00</div>
-
-  <div class="result-grid">
-    <div id="unitario">Unitário: R$ 0,00</div>
-    <div id="area">Área: 0 m²</div>
+<div class="grid">
+  <div class="field">
+    <label>Valor m²</label>
+    <input id="valor">
   </div>
 
-  <!-- AÇÕES -->
-  <div class="actions">
-    <button class="limpar" onclick="limpar()">Limpar</button>
-    <button class="salvar" onclick="salvar()">Salvar</button>
-    <button class="enviar" onclick="enviar()">Enviar</button>
+  <div class="field">
+    <label>Desperdício (%)</label>
+    <input id="desperdicio" value="0">
   </div>
+
+  <div class="field">
+    <label>Margem (%)</label>
+    <input id="margem" value="20">
+  </div>
+</div>
+
+<button class="calcular" onclick="calcular()">CALCULAR</button>
+
+<div class="total" id="total">R$ 0,00</div>
+
+<div class="result-grid">
+  <div id="unitario">Unitário: R$ 0,00</div>
+  <div id="area">Área: 0 m²</div>
+</div>
+
+<div class="actions">
+  <button class="limpar" onclick="limpar()">Limpar</button>
+  <button class="salvar" onclick="salvar()">Salvar</button>
+  <button class="enviar" onclick="enviar()">Enviar</button>
+</div>
 
 </div>
 
+<div class="historico" id="historico"></div>
+
 <script>
+let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
 function calcular() {
   let l = largura.value / 100;
   let a = altura.value / 100;
@@ -138,33 +184,48 @@ function calcular() {
   let precoFinal = preco * (1 + m);
   let total = precoFinal * q;
 
+  total = isNaN(total) ? 0 : total;
+
   document.getElementById("total").innerHTML = "R$ " + total.toFixed(2);
   document.getElementById("unitario").innerHTML = "Unitário: R$ " + precoFinal.toFixed(2);
   document.getElementById("area").innerHTML = "Área: " + area.toFixed(2) + " m²";
 
-  window.resultado = { total, precoFinal, area };
+  window.resultado = { total, precoFinal, area, data: new Date().toLocaleString() };
 }
 
 function limpar() {
   document.querySelectorAll("input").forEach(i => i.value = "");
+  margem.value = 20;
+  quantidade.value = 1;
   total.innerHTML = "R$ 0,00";
-  unitario.innerHTML = "Unitário: R$ 0,00";
-  area.innerHTML = "Área: 0 m²";
 }
 
 function salvar() {
-  localStorage.setItem("orcamento", JSON.stringify(window.resultado));
-  alert("Orçamento salvo!");
+  if (!window.resultado) return alert("Calcule primeiro!");
+
+  historico.push(window.resultado);
+  localStorage.setItem("historico", JSON.stringify(historico));
+  renderHistorico();
 }
 
 function enviar() {
   if (!window.resultado) return alert("Calcule primeiro!");
 
-  let msg = `Orçamento:\nTotal: R$ ${window.resultado.total.toFixed(2)}\nUnitário: R$ ${window.resultado.precoFinal.toFixed(2)}\nÁrea: ${window.resultado.area.toFixed(2)} m²`;
+  let msg = `Gráfica Masterprint\n\nOrçamento:\nTotal: R$ ${window.resultado.total.toFixed(2)}\nUnitário: R$ ${window.resultado.precoFinal.toFixed(2)}\nÁrea: ${window.resultado.area.toFixed(2)} m²\nData: ${window.resultado.data}`;
 
   let url = "https://wa.me/?text=" + encodeURIComponent(msg);
   window.open(url);
 }
+
+function renderHistorico() {
+  let html = "<b>Histórico:</b><br>";
+  historico.slice(-5).reverse().forEach(o => {
+    html += `R$ ${o.total.toFixed(2)} - ${o.data}<br>`;
+  });
+  document.getElementById("historico").innerHTML = html;
+}
+
+renderHistorico();
 </script>
 
 </body>
