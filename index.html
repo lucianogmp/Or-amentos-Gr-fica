@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gráfica Master Print</title>
 
-<!-- BIBLIOTECA PDF -->
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+
+<!-- PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
@@ -147,7 +150,7 @@ button {
   <button class="enviar" onclick="enviar()">Enviar</button>
 </div>
 
-<button class="pdf" style="width:100%; margin-top:10px;" onclick="gerarPDF()">GERAR PDF PROFISSIONAL</button>
+<button class="pdf" style="width:100%; margin-top:10px;" onclick="gerarPDF()">GERAR PDF</button>
 
 </div>
 
@@ -157,6 +160,12 @@ button {
 </div>
 
 <script>
+// PWA
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+// SISTEMA
 let lista = JSON.parse(localStorage.getItem("orcamentos")) || [];
 
 function calcular() {
@@ -192,7 +201,6 @@ const areaEl = document.getElementById("area");
 
 function salvar() {
   if (!window.resultado) return alert("Calcule primeiro");
-
   lista.push(window.resultado);
   localStorage.setItem("orcamentos", JSON.stringify(lista));
   render();
@@ -240,41 +248,25 @@ function gerarPDF() {
   doc.setFontSize(18);
   doc.text("Gráfica Master Print", 20, y);
 
-  y += 8;
+  y += 10;
   doc.setFontSize(12);
-  doc.text("Orçamento Profissional", 20, y);
-
-  y += 15;
-  doc.line(20, y, 190, y);
+  doc.text("Orçamento", 20, y);
 
   y += 10;
   doc.text("Cliente: " + (window.resultado.cliente || "Não informado"), 20, y);
 
   y += 8;
-  doc.text("Telefone: " + (window.resultado.telefone || "-"), 20, y);
-
-  y += 8;
   doc.text("Data: " + window.resultado.data, 20, y);
 
-  y += 15;
-  doc.line(20, y, 190, y);
-
-  y += 10;
-  doc.text("Área:", 20, y);
-  doc.text(window.resultado.area.toFixed(2) + " m²", 150, y);
+  y += 12;
+  doc.text("Área: " + window.resultado.area.toFixed(2) + " m²", 20, y);
 
   y += 8;
-  doc.text("Valor Unitário:", 20, y);
-  doc.text("R$ " + window.resultado.unitario.toFixed(2), 150, y);
+  doc.text("Valor Unitário: R$ " + window.resultado.unitario.toFixed(2), 20, y);
 
-  y += 15;
+  y += 12;
   doc.setFontSize(16);
-  doc.text("TOTAL:", 20, y);
-  doc.text("R$ " + window.resultado.total.toFixed(2), 150, y);
-
-  y += 20;
-  doc.setFontSize(10);
-  doc.text("Orçamento válido por 5 dias.", 20, y);
+  doc.text("TOTAL: R$ " + window.resultado.total.toFixed(2), 20, y);
 
   doc.save("orcamento_masterprint.pdf");
 }
