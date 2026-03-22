@@ -1,59 +1,136 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Adesivo</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      padding: 20px;
-    }
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: none;
-    }
-    button {
-      background: #38bdf8;
-      font-weight: bold;
-    }
-    .card {
-      background: #1e293b;
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 15px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Calculadora de Adesivo</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: flex;
+  gap: 10px;
+}
+
+.grid input {
+  flex: 1;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.calcular {
+  width: 100%;
+  background: #38bdf8;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.total {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #38bdf8;
+}
+
+.result-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.actions button {
+  flex: 1;
+}
+
+.limpar { background: #ef4444; color: white; }
+.salvar { background: #22c55e; color: white; }
+.enviar { background: #25d366; color: white; }
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 12px;
+}
+</style>
 </head>
+
 <body>
 
 <h2>Calculadora de Adesivo</h2>
 
 <div class="card">
-  <input id="largura" placeholder="Largura (cm)">
-  <input id="altura" placeholder="Altura (cm)">
-  <input id="quantidade" placeholder="Quantidade" value="1">
-  <input id="valor" placeholder="Valor por m²">
-  <input id="desperdicio" placeholder="Desperdício %" value="0">
-  <input id="margem" placeholder="Margem %" value="0">
 
-  <button onclick="calcular()">CALCULAR</button>
+  <!-- LINHA 1 -->
+  <div class="grid">
+    <input id="largura" placeholder="Largura (cm)">
+    <input id="altura" placeholder="Altura (cm)">
+    <input id="quantidade" placeholder="Qtd" value="1">
+  </div>
+
+  <!-- LINHA 2 -->
+  <div class="grid">
+    <input id="valor" placeholder="Valor m²">
+    <input id="desperdicio" placeholder="Desperdício %" value="0">
+    <input id="margem" placeholder="Margem %" value="0">
+  </div>
+
+  <!-- BOTÃO -->
+  <button class="calcular" onclick="calcular()">CALCULAR</button>
+
+  <!-- RESULTADO -->
+  <div class="total" id="total">R$ 0,00</div>
+
+  <div class="result-grid">
+    <div id="unitario">Unitário: R$ 0,00</div>
+    <div id="area">Área: 0 m²</div>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="actions">
+    <button class="limpar" onclick="limpar()">Limpar</button>
+    <button class="salvar" onclick="salvar()">Salvar</button>
+    <button class="enviar" onclick="enviar()">Enviar</button>
+  </div>
+
 </div>
-
-<div class="card" id="resultado"></div>
 
 <script>
 function calcular() {
-  let l = document.getElementById('largura').value / 100;
-  let a = document.getElementById('altura').value / 100;
-  let q = document.getElementById('quantidade').value;
-  let v = document.getElementById('valor').value;
-  let d = document.getElementById('desperdicio').value / 100;
-  let m = document.getElementById('margem').value / 100;
+  let l = largura.value / 100;
+  let a = altura.value / 100;
+  let q = quantidade.value;
+  let v = valor.value;
+  let d = desperdicio.value / 100;
+  let m = margem.value / 100;
 
   let area = l * a;
   let areaFinal = area * (1 + d);
@@ -61,10 +138,32 @@ function calcular() {
   let precoFinal = preco * (1 + m);
   let total = precoFinal * q;
 
-  document.getElementById('resultado').innerHTML =
-    "Área: " + area.toFixed(2) + " m²<br>" +
-    "Unitário: R$ " + precoFinal.toFixed(2) + "<br>" +
-    "<b>Total: R$ " + total.toFixed(2) + "</b>";
+  document.getElementById("total").innerHTML = "R$ " + total.toFixed(2);
+  document.getElementById("unitario").innerHTML = "Unitário: R$ " + precoFinal.toFixed(2);
+  document.getElementById("area").innerHTML = "Área: " + area.toFixed(2) + " m²";
+
+  window.resultado = { total, precoFinal, area };
+}
+
+function limpar() {
+  document.querySelectorAll("input").forEach(i => i.value = "");
+  total.innerHTML = "R$ 0,00";
+  unitario.innerHTML = "Unitário: R$ 0,00";
+  area.innerHTML = "Área: 0 m²";
+}
+
+function salvar() {
+  localStorage.setItem("orcamento", JSON.stringify(window.resultado));
+  alert("Orçamento salvo!");
+}
+
+function enviar() {
+  if (!window.resultado) return alert("Calcule primeiro!");
+
+  let msg = `Orçamento:\nTotal: R$ ${window.resultado.total.toFixed(2)}\nUnitário: R$ ${window.resultado.precoFinal.toFixed(2)}\nÁrea: ${window.resultado.area.toFixed(2)} m²`;
+
+  let url = "https://wa.me/?text=" + encodeURIComponent(msg);
+  window.open(url);
 }
 </script>
 
