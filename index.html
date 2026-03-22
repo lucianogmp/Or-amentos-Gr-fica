@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Adesivo</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background: #38bdf8;
+      font-weight: bold;
+    }
+    .card {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Calculadora de Adesivo</h2>
+
+<div class="card">
+  <input id="largura" placeholder="Largura (cm)">
+  <input id="altura" placeholder="Altura (cm)">
+  <input id="quantidade" placeholder="Quantidade" value="1">
+  <input id="valor" placeholder="Valor por m²">
+  <input id="desperdicio" placeholder="Desperdício %" value="0">
+  <input id="margem" placeholder="Margem %" value="0">
+
+  <button onclick="calcular()">CALCULAR</button>
+</div>
+
+<div class="card" id="resultado"></div>
+
+<script>
+function calcular() {
+  let l = document.getElementById('largura').value / 100;
+  let a = document.getElementById('altura').value / 100;
+  let q = document.getElementById('quantidade').value;
+  let v = document.getElementById('valor').value;
+  let d = document.getElementById('desperdicio').value / 100;
+  let m = document.getElementById('margem').value / 100;
+
+  let area = l * a;
+  let areaFinal = area * (1 + d);
+  let preco = areaFinal * v;
+  let precoFinal = preco * (1 + m);
+  let total = precoFinal * q;
+
+  document.getElementById('resultado').innerHTML =
+    "Área: " + area.toFixed(2) + " m²<br>" +
+    "Unitário: R$ " + precoFinal.toFixed(2) + "<br>" +
+    "<b>Total: R$ " + total.toFixed(2) + "</b>";
+}
+</script>
+
+</body>
+</html>
