@@ -315,6 +315,9 @@ function calcular() {
   window.resultado = {
     cliente: cliente.value,
     telefone: telefone.value,
+    largura: parseFloat(largura.value) || 0,
+    altura: parseFloat(altura.value) || 0,
+    quantidade: q,
     total,
     unitario,
     area,
@@ -402,36 +405,170 @@ document.getElementById('telefone').addEventListener('input', function() {
   formatarTelefone(this);
 });
 
+let logoBase64 = null;
+(function preloadLogo() {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    canvas.getContext('2d').drawImage(img, 0, 0);
+    logoBase64 = canvas.toDataURL('image/png');
+  };
+  img.src = 'public/logo-dark.png';
+})();
+
 function gerarPDF() {
   if (!window.resultado) return alert("Calcule primeiro");
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
+  const pw = doc.internal.pageSize.getWidth();
+  const mx = 15;
+  const contentW = pw - mx * 2;
+  let y = 12;
 
-  let y = 20;
+  function centerText(text, yPos, size, style) {
+    doc.setFontSize(size);
+    doc.setFont('helvetica', style || 'normal');
+    doc.text(text, pw / 2, yPos, { align: 'center' });
+  }
 
-  doc.setFontSize(18);
-  doc.text("Gráfica Master Print", 20, y);
+  function drawLine(yPos) {
+    doc.setDrawColor(180);
+    doc.setLineWidth(0.3);
+    doc.line(mx, yPos, pw - mx, yPos);
+  }
 
-  y += 10;
-  doc.setFontSize(12);
-  doc.text("Orçamento", 20, y);
+  // --- HEADER: Logo ---
+  if (logoBase64) {
+    const logoW = 60;
+    const logoH = 20;
+    doc.addImage(logoBase64, 'PNG', (pw - logoW) / 2, y, logoW, logoH);
+    y += logoH + 3;
+  } else {
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text("GRAFICA", pw / 2, y + 6, { align: 'center' });
+    doc.setFontSize(24);
+    doc.text("Master Print", pw / 2, y + 14, { align: 'center' });
+    y += 20;
+  }
 
-  y += 10;
-  doc.text("Cliente: " + (window.resultado.cliente || "Não informado"), 20, y);
+  // --- Slogan ---
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bolditalic');
+  doc.text("TRANSFORMANDO SUAS IDEIAS EM PROJETOS DE QUALIDADE!", pw / 2, y, { align: 'center' });
+  y += 6;
 
-  y += 8;
-  doc.text("Data: " + window.resultado.data, 20, y);
+  // --- Contato ---
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.text("WhatsApp: (33) 99813-9539   |   @gmasterprint", pw / 2, y, { align: 'center' });
+  y += 4;
+  doc.text("R. Elieser Pena, 67, Centro - Pote/MG", pw / 2, y, { align: 'center' });
+  y += 5;
+
+  drawLine(y);
+  y += 7;
+
+  // --- Dados do Cliente ---
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text("Nome:", mx, y);
+  doc.setFont('helvetica', 'normal');
+  doc.text(window.resultado.cliente || "Nao informado", mx + 18, y);
+
+  y += 7;
+  doc.setFont('helvetica', 'bold');
+  doc.text("Telefone:", mx, y);
+  doc.setFont('helvetica', 'normal');
+  doc.text(window.resultado.telefone || "Nao informado", mx + 24, y);
+
+  doc.setFont('helvetica', 'bold');
+  doc.text("Data:", pw / 2 + 10, y);
+  doc.setFont('helvetica', 'normal');
+  doc.text(window.resultado.data, pw / 2 + 24, y);
+
+  y += 5;
+  drawLine(y);
+  y += 2;
+
+  // --- Tabela: Cabeçalho ---
+  const col1 = mx;
+  const col2 = mx + 25;
+  const col3 = pw - mx - 35;
+  const rowH = 8;
+
+  doc.setFillColor(40, 40, 40);
+  doc.rect(mx, y, contentW, rowH, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text("QUANT.", col1 + 2, y + 5.5);
+  doc.text("DESCRICAO", col2 + 2, y + 5.5);
+  doc.text("VALOR R$", col3 + 2, y + 5.5);
+  doc.setTextColor(0, 0, 0);
+  y += rowH;
+
+  // --- Tabela: Linhas de item ---
+  const r = window.resultado;
+  const descricao = "Impressao " + r.largura + "cm x " + r.altura + "cm";
+  const areaStr = "Area: " + r.area.toFixed(2) + " m2";
+  const qtd = String(r.quantidade);
+  const valorUnit = "R$ " + r.unitario.toFixed(2);
+
+  // Row 1
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.rect(mx, y, contentW, rowH * 2, 'S');
+  doc.line(col2, y, col2, y + rowH * 2);
+  doc.line(col3, y, col3, y + rowH * 2);
+  doc.text(qtd, col1 + 10, y + 5.5, { align: 'center' });
+  doc.text(descricao, col2 + 2, y + 5.5);
+  doc.text(valorUnit, col3 + 2, y + 5.5);
+  y += rowH;
+  doc.setFontSize(8);
+  doc.setTextColor(100);
+  doc.text(areaStr, col2 + 2, y + 4);
+  doc.setTextColor(0);
+  y += rowH;
+
+  // Empty rows to match comanda style
+  for (let i = 0; i < 5; i++) {
+    doc.rect(mx, y, contentW, rowH, 'S');
+    doc.line(col2, y, col2, y + rowH);
+    doc.line(col3, y, col3, y + rowH);
+    y += rowH;
+  }
+
+  // --- TOTAL ---
+  doc.setFillColor(40, 40, 40);
+  doc.rect(mx, y, contentW, rowH + 2, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.text("TOTAL R$", col3 - 25, y + 6.5);
+  doc.text("R$ " + r.total.toFixed(2), col3 + 2, y + 6.5);
+  doc.setTextColor(0);
+  y += rowH + 2;
 
   y += 12;
-  doc.text("Área: " + window.resultado.area.toFixed(2) + " m²", 20, y);
+  drawLine(y);
+  y += 10;
 
-  y += 8;
-  doc.text("Valor Unitário: R$ " + window.resultado.unitario.toFixed(2), 20, y);
+  // --- Rodapé ---
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text("Master Print", mx, y);
+  doc.setFont('helvetica', 'normal');
+  doc.text("WhatsApp: (33) 99813-9539", mx + 35, y);
 
-  y += 12;
-  doc.setFontSize(16);
-  doc.text("TOTAL: R$ " + window.resultado.total.toFixed(2), 20, y);
+  y += 20;
+  drawLine(y);
+  y += 5;
+  centerText("ASSINATURA", y, 8, 'bold');
 
   doc.save("orcamento_masterprint.pdf");
 }
