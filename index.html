@@ -79,10 +79,10 @@
 
 <body class="bg-slate-50 dark:bg-[#0d1117] min-h-screen font-sans text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
 
-<div class="max-w-2xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-5">
+<div class="max-w-5xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
 
   <!-- Header -->
-  <header class="text-center space-y-3 pb-2 relative">
+  <header class="text-center space-y-3 pb-4 relative">
     <img
       src="public/logo-dark.png"
       alt="Gráfica Master Print"
@@ -95,7 +95,6 @@
     >
     <p class="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide">Sistema de Orçamentos</p>
 
-    <!-- Theme Toggle -->
     <button
       onclick="toggleTheme()"
       class="absolute top-0 right-0 p-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300
@@ -111,236 +110,209 @@
     </button>
   </header>
 
-  <!-- Card: Dados do Cliente -->
-  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
-      Dados do Cliente
-    </h3>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div class="space-y-1.5">
-        <label for="cliente" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Nome do Cliente</label>
-        <input
-          type="text"
-          id="cliente"
-          placeholder="Ex: João Silva"
-          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
-                 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-        >
-      </div>
-
-      <div class="space-y-1.5">
-        <label for="telefone" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Telefone</label>
-        <input
-          type="tel"
-          id="telefone"
-          placeholder="(00) 00000-0000"
-          inputmode="tel"
-          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
-                 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-        >
-      </div>
-
-      <div class="space-y-1.5 sm:col-span-2">
-        <label for="vendedor" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Vendedor</label>
-        <input
-          type="text"
-          id="vendedor"
-          placeholder="Nome do vendedor"
-          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
-                 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-        >
-      </div>
-    </div>
-  </section>
-
-  <!-- Card: Medidas -->
-  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
-      Medidas
-    </h3>
-
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="space-y-1.5">
-        <label for="largura" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Largura</label>
-        <div class="relative">
-          <input
-            type="number"
-            id="largura"
-            placeholder="0"
-            inputmode="decimal"
-            min="0"
-            step="any"
-            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                   border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-12 text-sm
-                   focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-          >
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 dark:text-slate-500">cm</span>
-        </div>
-      </div>
-
-      <div class="space-y-1.5">
-        <label for="altura" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Altura</label>
-        <div class="relative">
-          <input
-            type="number"
-            id="altura"
-            placeholder="0"
-            inputmode="decimal"
-            min="0"
-            step="any"
-            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                   border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-12 text-sm
-                   focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-          >
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 dark:text-slate-500">cm</span>
-        </div>
-      </div>
-
-      <div class="space-y-1.5">
-        <label for="quantidade" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Quantidade</label>
-        <input
-          type="number"
-          id="quantidade"
-          value="1"
-          inputmode="numeric"
-          min="1"
-          step="1"
-          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
-                 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-        >
-      </div>
-    </div>
-  </section>
-
-  <!-- Card: Configurações Financeiras -->
-  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
-      Configurações Financeiras
-    </h3>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div class="space-y-1.5">
-        <label for="valor" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Valor por m²</label>
-        <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">R$</span>
-          <input
-            type="number"
-            id="valor"
-            placeholder="0,00"
-            inputmode="decimal"
-            min="0"
-            step="any"
-            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                   border border-slate-300 dark:border-[#374151] rounded-lg pl-10 pr-4 py-3 text-sm
-                   focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-          >
-        </div>
-      </div>
-
-      <div class="space-y-1.5">
-        <label for="margem" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Margem de lucro</label>
-        <div class="relative">
-          <input
-            type="number"
-            id="margem"
-            value="20"
-            inputmode="decimal"
-            min="0"
-            step="any"
-            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-                   border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-10 text-sm
-                   focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
-          >
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">%</span>
-        </div>
-      </div>
-    </div>
-
+  <!-- Tabs Navigation -->
+  <nav class="flex border-b border-slate-200 dark:border-[#2a3040] mb-5">
     <button
-      onclick="calcular()"
-      class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3.5 rounded-xl text-sm uppercase tracking-wide
-             transition-all duration-200 hover:shadow-lg hover:shadow-brand-600/25 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+      id="tab-form"
+      onclick="switchTab('form')"
+      class="flex-1 sm:flex-none px-5 py-3 text-sm font-semibold border-b-2 transition-colors duration-200
+             border-brand-500 text-brand-600 dark:text-brand-400"
     >
-      Calcular Orçamento
+      Novo Orçamento
     </button>
-  </section>
-
-  <!-- Card: Resultado -->
-  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-brand-200 dark:border-brand-500/30 p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
-      Resultado
-    </h3>
-
-    <div class="text-center py-2">
-      <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1">Total</p>
-      <p id="total" class="text-3xl sm:text-4xl font-bold text-brand-600 dark:text-brand-400 transition-all duration-300">
-        R$ 0,00
-      </p>
-    </div>
-
-    <div class="grid grid-cols-2 gap-3">
-      <div class="bg-slate-50 dark:bg-[#0d1117] rounded-lg p-3 text-center border border-slate-200 dark:border-[#2a3040]">
-        <p class="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Unitário</p>
-        <p id="unitario" class="text-sm font-semibold text-slate-700 dark:text-slate-200">R$ 0,00</p>
-      </div>
-      <div class="bg-slate-50 dark:bg-[#0d1117] rounded-lg p-3 text-center border border-slate-200 dark:border-[#2a3040]">
-        <p class="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Área</p>
-        <p id="area" class="text-sm font-semibold text-slate-700 dark:text-slate-200">0,00 m²</p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-3 gap-3 pt-1">
-      <button
-        onclick="limpar()"
-        class="bg-red-50 dark:bg-red-500/15 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/30
-               hover:bg-red-100 dark:hover:bg-red-500/25 font-semibold py-3 rounded-xl text-sm
-               transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-red-500/30"
-      >
-        Limpar
-      </button>
-      <button
-        onclick="salvar()"
-        class="bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30
-               hover:bg-emerald-100 dark:hover:bg-emerald-500/25 font-semibold py-3 rounded-xl text-sm
-               transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
-      >
-        Salvar
-      </button>
-      <button
-        onclick="enviar()"
-        class="bg-green-50 dark:bg-green-500/15 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-500/30
-               hover:bg-green-100 dark:hover:bg-green-500/25 font-semibold py-3 rounded-xl text-sm
-               transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-green-500/30"
-      >
-        WhatsApp
-      </button>
-    </div>
-
     <button
-      onclick="gerarPDF()"
-      class="w-full bg-gold-500/10 dark:bg-gold-500/15 text-gold-600 dark:text-gold-400 border border-gold-300 dark:border-gold-500/30
-             hover:bg-gold-500/20 dark:hover:bg-gold-500/25 font-semibold py-3 rounded-xl text-sm
-             transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+      id="tab-history"
+      onclick="switchTab('history')"
+      class="flex-1 sm:flex-none px-5 py-3 text-sm font-semibold border-b-2 transition-colors duration-200
+             border-transparent text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
     >
-      Gerar PDF
+      Histórico
+      <span id="tab-badge" class="ml-1.5 text-[11px] font-bold bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-full px-1.5 py-0.5"></span>
     </button>
-  </section>
+  </nav>
 
-  <!-- Card: Histórico -->
-  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-3 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
-      Histórico Recente
-    </h3>
-    <div id="lista" class="space-y-2 text-sm"></div>
-  </section>
+  <!-- Panel: Novo Orçamento -->
+  <div id="panel-form">
+   <div class="lg:grid lg:grid-cols-5 lg:gap-5 lg:items-start space-y-5 lg:space-y-0">
+
+    <!-- Left Column: Form -->
+    <div class="lg:col-span-3 space-y-5">
+
+      <!-- Card: Dados do Cliente -->
+      <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
+          Dados do Cliente
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label for="cliente" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Nome do Cliente</label>
+            <input type="text" id="cliente" placeholder="Ex: João Silva"
+              class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                     border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
+                     focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+          </div>
+          <div class="space-y-1.5">
+            <label for="telefone" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Telefone</label>
+            <input type="tel" id="telefone" placeholder="(00) 00000-0000" inputmode="tel"
+              class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                     border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
+                     focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+          </div>
+          <div class="space-y-1.5 sm:col-span-2">
+            <label for="vendedor" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Vendedor</label>
+            <input type="text" id="vendedor" placeholder="Nome do vendedor"
+              class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                     border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
+                     focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+          </div>
+        </div>
+      </section>
+
+      <!-- Card: Medidas -->
+      <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
+          Medidas
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="space-y-1.5">
+            <label for="largura" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Largura</label>
+            <div class="relative">
+              <input type="number" id="largura" placeholder="0" inputmode="decimal" min="0" step="any"
+                class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                       border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-12 text-sm
+                       focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+              <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 dark:text-slate-500">cm</span>
+            </div>
+          </div>
+          <div class="space-y-1.5">
+            <label for="altura" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Altura</label>
+            <div class="relative">
+              <input type="number" id="altura" placeholder="0" inputmode="decimal" min="0" step="any"
+                class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                       border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-12 text-sm
+                       focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+              <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 dark:text-slate-500">cm</span>
+            </div>
+          </div>
+          <div class="space-y-1.5">
+            <label for="quantidade" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Quantidade</label>
+            <input type="number" id="quantidade" value="1" inputmode="numeric" min="1" step="1"
+              class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                     border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
+                     focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+          </div>
+        </div>
+      </section>
+
+      <!-- Card: Configurações Financeiras -->
+      <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
+          Configurações Financeiras
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label for="valor" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Valor por m²</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">R$</span>
+              <input type="number" id="valor" placeholder="0,00" inputmode="decimal" min="0" step="any"
+                class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                       border border-slate-300 dark:border-[#374151] rounded-lg pl-10 pr-4 py-3 text-sm
+                       focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+            </div>
+          </div>
+          <div class="space-y-1.5">
+            <label for="margem" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Margem de lucro</label>
+            <div class="relative">
+              <input type="number" id="margem" value="20" inputmode="decimal" min="0" step="any"
+                class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                       border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-10 text-sm
+                       focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200">
+              <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">%</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="calcular()"
+          class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3.5 rounded-xl text-sm uppercase tracking-wide
+                 transition-all duration-200 hover:shadow-lg hover:shadow-brand-600/25 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-brand-500/40">
+          Calcular Orçamento
+        </button>
+      </section>
+
+    </div>
+
+    <!-- Right Column: Resultado (sticky on desktop) -->
+    <div class="lg:col-span-2 lg:sticky lg:top-6">
+      <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-brand-200 dark:border-brand-500/30 p-5 space-y-4 fade-in">
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
+          Resultado
+        </h3>
+
+        <div class="text-center py-2">
+          <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1">Total</p>
+          <p id="total" class="text-3xl sm:text-4xl font-bold text-brand-600 dark:text-brand-400 transition-all duration-300">
+            R$ 0,00
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-slate-50 dark:bg-[#0d1117] rounded-lg p-3 text-center border border-slate-200 dark:border-[#2a3040]">
+            <p class="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Unitário</p>
+            <p id="unitario" class="text-sm font-semibold text-slate-700 dark:text-slate-200">R$ 0,00</p>
+          </div>
+          <div class="bg-slate-50 dark:bg-[#0d1117] rounded-lg p-3 text-center border border-slate-200 dark:border-[#2a3040]">
+            <p class="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Área</p>
+            <p id="area" class="text-sm font-semibold text-slate-700 dark:text-slate-200">0,00 m²</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 pt-1">
+          <button onclick="limpar()"
+            class="bg-red-50 dark:bg-red-500/15 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/30
+                   hover:bg-red-100 dark:hover:bg-red-500/25 font-semibold py-3 rounded-xl text-sm
+                   transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-red-500/30">
+            Limpar
+          </button>
+          <button onclick="salvar()"
+            class="bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30
+                   hover:bg-emerald-100 dark:hover:bg-emerald-500/25 font-semibold py-3 rounded-xl text-sm
+                   transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+            Salvar
+          </button>
+          <button onclick="enviar()"
+            class="bg-green-50 dark:bg-green-500/15 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-500/30
+                   hover:bg-green-100 dark:hover:bg-green-500/25 font-semibold py-3 rounded-xl text-sm
+                   transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-green-500/30">
+            WhatsApp
+          </button>
+        </div>
+
+        <button onclick="gerarPDF()"
+          class="w-full bg-gold-500/10 dark:bg-gold-500/15 text-gold-600 dark:text-gold-400 border border-gold-300 dark:border-gold-500/30
+                 hover:bg-gold-500/20 dark:hover:bg-gold-500/25 font-semibold py-3 rounded-xl text-sm
+                 transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-gold-500/30">
+          Gerar PDF
+        </button>
+      </section>
+    </div>
+
+   </div>
+  </div>
+
+  <!-- Panel: Histórico -->
+  <div id="panel-history" class="hidden">
+    <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-3 fade-in">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
+          Histórico de Orçamentos
+        </h3>
+        <span id="lista-count" class="text-[11px] font-medium text-slate-400 dark:text-slate-500"></span>
+      </div>
+      <div id="lista" class="space-y-2 text-sm"></div>
+    </section>
+  </div>
 
   <!-- Footer -->
-  <footer class="text-center pt-2 pb-4">
+  <footer class="text-center pt-4 pb-4">
     <p class="text-xs text-slate-400 dark:text-slate-600">Gráfica Master Print &mdash; Sistema de Orçamentos</p>
   </footer>
 
@@ -355,6 +327,25 @@ function toggleTheme() {
   const html = document.documentElement;
   html.classList.toggle('dark');
   localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+}
+
+function switchTab(tab) {
+  const panelForm = document.getElementById('panel-form');
+  const panelHistory = document.getElementById('panel-history');
+  const tabForm = document.getElementById('tab-form');
+  const tabHistory = document.getElementById('tab-history');
+
+  const active = ['border-brand-500', 'text-brand-600', 'dark:text-brand-400'];
+  const inactive = ['border-transparent', 'text-slate-400', 'dark:text-slate-500', 'hover:text-slate-600', 'dark:hover:text-slate-300'];
+
+  panelForm.classList.toggle('hidden', tab !== 'form');
+  panelHistory.classList.toggle('hidden', tab !== 'history');
+
+  [tabForm, tabHistory].forEach(btn => {
+    const isActive = (btn === tabForm && tab === 'form') || (btn === tabHistory && tab === 'history');
+    active.forEach(c => btn.classList.toggle(c, isActive));
+    inactive.forEach(c => btn.classList.toggle(c, !isActive));
+  });
 }
 
 let lista = JSON.parse(localStorage.getItem("orcamentos")) || [];
@@ -382,6 +373,8 @@ function calcular() {
     largura: parseFloat(largura.value) || 0,
     altura: parseFloat(altura.value) || 0,
     quantidade: q,
+    valorM2: v,
+    margemPercent: parseFloat(margem.value) || 0,
     total,
     unitario,
     area,
@@ -455,22 +448,94 @@ function limpar() {
   window.resultado = null;
 }
 
+function carregar(index) {
+  const o = lista[index];
+  if (!o) return;
+
+  cliente.value = o.cliente || '';
+  telefone.value = o.telefone || '';
+  vendedor.value = o.vendedor || '';
+  largura.value = o.largura || '';
+  altura.value = o.altura || '';
+  quantidade.value = o.quantidade || 1;
+  valor.value = o.valorM2 || '';
+  margem.value = o.margemPercent != null ? o.margemPercent : 20;
+
+  window.resultado = { ...o };
+
+  totalEl.textContent = "R$ " + (o.total || 0).toFixed(2).replace('.', ',');
+  unitarioEl.textContent = "R$ " + (o.unitario || 0).toFixed(2).replace('.', ',');
+  areaEl.textContent = (o.area || 0).toFixed(2).replace('.', ',') + " m\u00B2";
+
+  switchTab('form');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function excluir(index) {
+  lista.splice(index, 1);
+  localStorage.setItem("orcamentos", JSON.stringify(lista));
+  render();
+}
+
 function render() {
   const container = document.getElementById("lista");
+  const countEl = document.getElementById("lista-count");
+  const badgeEl = document.getElementById("tab-badge");
+
+  countEl.textContent = lista.length > 0 ? lista.length + (lista.length === 1 ? " item" : " itens") : "";
+  badgeEl.textContent = lista.length > 0 ? lista.length : "";
+
   if (lista.length === 0) {
-    container.innerHTML = '<p class="text-slate-400 dark:text-slate-500 text-sm italic">Nenhum orçamento salvo.</p>';
+    container.innerHTML = '<p class="text-slate-400 dark:text-slate-500 text-sm italic">Nenhum or\u00E7amento salvo.</p>';
     return;
   }
 
   let html = "";
-  lista.slice(-5).reverse().forEach(o => {
+  lista.slice().reverse().forEach((o, reverseIdx) => {
+    const realIndex = lista.length - 1 - reverseIdx;
+    const totalFmt = (o.total || 0).toFixed(2).replace('.', ',');
+    const unitFmt = (o.unitario || 0).toFixed(2).replace('.', ',');
+    const areaFmt = (o.area || 0).toFixed(2).replace('.', ',');
+
     html += `
-      <div class="flex items-center justify-between bg-slate-50 dark:bg-[#0d1117] border border-slate-200 dark:border-[#2a3040]/50 rounded-lg px-4 py-3 hover:border-brand-400 dark:hover:border-brand-500/40 transition-colors duration-150">
-        <div>
-          <p class="font-medium text-slate-700 dark:text-slate-200">${o.cliente || "Sem nome"}</p>
-          <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">${o.data || ""}</p>
+      <div class="bg-slate-50 dark:bg-[#0d1117] border border-slate-200 dark:border-[#2a3040]/50 rounded-xl p-4 hover:border-brand-400 dark:hover:border-brand-500/40 transition-colors duration-150">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-slate-800 dark:text-slate-100 truncate">${o.cliente || "Sem nome"}</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">${o.data || ""}</p>
+          </div>
+          <span class="text-base font-bold text-brand-600 dark:text-brand-400 whitespace-nowrap">R$ ${totalFmt}</span>
         </div>
-        <span class="text-sm font-semibold text-brand-600 dark:text-brand-400">R$ ${o.total.toFixed(2).replace('.', ',')}</span>
+
+        <div class="grid grid-cols-3 gap-2 mt-3 text-xs">
+          <div class="bg-slate-100 dark:bg-[#1a1f2e] rounded-lg px-2 py-1.5 text-center">
+            <span class="text-slate-400 dark:text-slate-500 block">Medidas</span>
+            <span class="font-medium text-slate-700 dark:text-slate-300">${o.largura || 0}x${o.altura || 0} cm</span>
+          </div>
+          <div class="bg-slate-100 dark:bg-[#1a1f2e] rounded-lg px-2 py-1.5 text-center">
+            <span class="text-slate-400 dark:text-slate-500 block">\u00C1rea</span>
+            <span class="font-medium text-slate-700 dark:text-slate-300">${areaFmt} m\u00B2</span>
+          </div>
+          <div class="bg-slate-100 dark:bg-[#1a1f2e] rounded-lg px-2 py-1.5 text-center">
+            <span class="text-slate-400 dark:text-slate-500 block">Unit.</span>
+            <span class="font-medium text-slate-700 dark:text-slate-300">R$ ${unitFmt}</span>
+          </div>
+        </div>
+
+        ${o.vendedor ? '<p class="text-xs text-slate-400 dark:text-slate-500 mt-2">Vendedor: <span class="text-slate-600 dark:text-slate-300">' + o.vendedor + '</span></p>' : ''}
+
+        <div class="flex gap-2 mt-3">
+          <button onclick="carregar(${realIndex})"
+            class="flex-1 text-xs font-medium py-2 rounded-lg bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400
+                   border border-brand-200 dark:border-brand-500/25 hover:bg-brand-100 dark:hover:bg-brand-500/20 transition-all duration-150">
+            Abrir no formul\u00E1rio
+          </button>
+          <button onclick="excluir(${realIndex})"
+            class="text-xs font-medium px-3 py-2 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 dark:text-red-400
+                   border border-red-200 dark:border-red-500/25 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-150">
+            Excluir
+          </button>
+        </div>
       </div>`;
   });
   container.innerHTML = html;
