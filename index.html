@@ -12,22 +12,28 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
+    darkMode: 'class',
     theme: {
       extend: {
         colors: {
           brand: {
-            50: '#eff6ff',
-            100: '#dbeafe',
-            400: '#60a5fa',
-            500: '#3b82f6',
-            600: '#2563eb',
-            700: '#1d4ed8',
+            50: '#ecfeff',
+            100: '#cffafe',
+            300: '#4dd9ed',
+            400: '#22c5e0',
+            500: '#0ea5c9',
+            600: '#0988a8',
+            700: '#076d87',
           },
-          surface: {
-            DEFAULT: '#1e293b',
-            dark: '#0f172a',
-            light: '#334155',
-            lighter: '#475569',
+          magenta: {
+            400: '#f472b6',
+            500: '#ec4899',
+            600: '#db2777',
+          },
+          gold: {
+            400: '#facc15',
+            500: '#eab308',
+            600: '#ca8a04',
           },
         },
         fontFamily: {
@@ -47,7 +53,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-  [x-cloak] { display: none !important; }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   input[type=number] { -moz-appearance: textfield; }
@@ -63,57 +68,89 @@
     100% { transform: scale(1); }
   }
 </style>
+
+<script>
+  if (localStorage.getItem('theme') === 'dark' ||
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  }
+</script>
 </head>
 
-<body class="bg-surface-dark min-h-screen font-sans text-slate-100 antialiased">
+<body class="bg-slate-50 dark:bg-[#0d1117] min-h-screen font-sans text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
 
 <div class="max-w-2xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-5">
 
   <!-- Header -->
-  <header class="text-center space-y-1 pb-2">
-    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-      Gráfica Master Print
-    </h1>
-    <p class="text-sm text-slate-400 font-medium">Sistema de Orçamentos</p>
+  <header class="text-center space-y-3 pb-2 relative">
+    <img
+      src="public/logo-dark.png"
+      alt="Gráfica Master Print"
+      class="h-14 sm:h-16 mx-auto dark:hidden"
+    >
+    <img
+      src="public/logo-white.png"
+      alt="Gráfica Master Print"
+      class="h-14 sm:h-16 mx-auto hidden dark:block"
+    >
+    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide">Sistema de Orçamentos</p>
+
+    <!-- Theme Toggle -->
+    <button
+      onclick="toggleTheme()"
+      class="absolute top-0 right-0 p-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300
+             hover:bg-slate-300 dark:hover:bg-slate-700 transition-all duration-200"
+      title="Alternar tema"
+    >
+      <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.95l-.71.71M21 12h-1M4 12H3m16.66 7.66l-.71-.71M4.05 4.05l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+      </svg>
+      <svg id="icon-moon" class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0112.035 3c-.3 0-.6.017-.896.05A9.993 9.993 0 003 12.98a10.003 10.003 0 009.752 2.022z"/>
+      </svg>
+    </button>
   </header>
 
   <!-- Card: Dados do Cliente -->
-  <section class="bg-surface rounded-2xl border border-slate-700/50 p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
+    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
       Dados do Cliente
     </h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="space-y-1.5">
-        <label for="cliente" class="block text-sm font-medium text-slate-400">Nome do Cliente</label>
+        <label for="cliente" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Nome do Cliente</label>
         <input
           type="text"
           id="cliente"
           placeholder="Ex: João Silva"
-          class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 text-sm
+          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
                  focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
         >
       </div>
 
       <div class="space-y-1.5">
-        <label for="telefone" class="block text-sm font-medium text-slate-400">Telefone</label>
+        <label for="telefone" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Telefone</label>
         <input
           type="tel"
           id="telefone"
           placeholder="(00) 00000-0000"
           inputmode="tel"
-          class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 text-sm
+          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
                  focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
         >
       </div>
 
       <div class="space-y-1.5 sm:col-span-2">
-        <label for="vendedor" class="block text-sm font-medium text-slate-400">Vendedor</label>
+        <label for="vendedor" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Vendedor</label>
         <input
           type="text"
           id="vendedor"
           placeholder="Nome do vendedor"
-          class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 text-sm
+          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
                  focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
         >
       </div>
@@ -121,14 +158,14 @@
   </section>
 
   <!-- Card: Medidas -->
-  <section class="bg-surface rounded-2xl border border-slate-700/50 p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
+    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
       Medidas
     </h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div class="space-y-1.5">
-        <label for="largura" class="block text-sm font-medium text-slate-400">Largura</label>
+        <label for="largura" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Largura</label>
         <div class="relative">
           <input
             type="number"
@@ -137,15 +174,16 @@
             inputmode="decimal"
             min="0"
             step="any"
-            class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 pr-12 text-sm
+            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                   border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-12 text-sm
                    focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
           >
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-500">cm</span>
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 dark:text-slate-500">cm</span>
         </div>
       </div>
 
       <div class="space-y-1.5">
-        <label for="altura" class="block text-sm font-medium text-slate-400">Altura</label>
+        <label for="altura" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Altura</label>
         <div class="relative">
           <input
             type="number"
@@ -154,15 +192,16 @@
             inputmode="decimal"
             min="0"
             step="any"
-            class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 pr-12 text-sm
+            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                   border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-12 text-sm
                    focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
           >
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-500">cm</span>
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400 dark:text-slate-500">cm</span>
         </div>
       </div>
 
       <div class="space-y-1.5">
-        <label for="quantidade" class="block text-sm font-medium text-slate-400">Quantidade</label>
+        <label for="quantidade" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Quantidade</label>
         <input
           type="number"
           id="quantidade"
@@ -170,7 +209,8 @@
           inputmode="numeric"
           min="1"
           step="1"
-          class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 text-sm
+          class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                 border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 text-sm
                  focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
         >
       </div>
@@ -178,16 +218,16 @@
   </section>
 
   <!-- Card: Configurações Financeiras -->
-  <section class="bg-surface rounded-2xl border border-slate-700/50 p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-4 fade-in">
+    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
       Configurações Financeiras
     </h3>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="space-y-1.5">
-        <label for="valor" class="block text-sm font-medium text-slate-400">Valor por m²</label>
+        <label for="valor" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Valor por m²</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-500">R$</span>
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">R$</span>
           <input
             type="number"
             id="valor"
@@ -195,14 +235,15 @@
             inputmode="decimal"
             min="0"
             step="any"
-            class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg pl-10 pr-4 py-3 text-sm
+            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                   border border-slate-300 dark:border-[#374151] rounded-lg pl-10 pr-4 py-3 text-sm
                    focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
           >
         </div>
       </div>
 
       <div class="space-y-1.5">
-        <label for="margem" class="block text-sm font-medium text-slate-400">Margem de lucro</label>
+        <label for="margem" class="block text-sm font-medium text-slate-600 dark:text-slate-400">Margem de lucro</label>
         <div class="relative">
           <input
             type="number"
@@ -211,10 +252,11 @@
             inputmode="decimal"
             min="0"
             step="any"
-            class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 pr-10 text-sm
+            class="w-full bg-slate-50 dark:bg-[#232a3a] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                   border border-slate-300 dark:border-[#374151] rounded-lg px-4 py-3 pr-10 text-sm
                    focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
           >
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-500">%</span>
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">%</span>
         </div>
       </div>
     </div>
@@ -229,47 +271,50 @@
   </section>
 
   <!-- Card: Resultado -->
-  <section class="bg-surface rounded-2xl border border-brand-500/20 p-5 space-y-4 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-brand-200 dark:border-brand-500/30 p-5 space-y-4 fade-in">
+    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
       Resultado
     </h3>
 
     <div class="text-center py-2">
-      <p class="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-1">Total</p>
-      <p id="total" class="text-3xl sm:text-4xl font-bold text-brand-400 transition-all duration-300">
+      <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1">Total</p>
+      <p id="total" class="text-3xl sm:text-4xl font-bold text-brand-600 dark:text-brand-400 transition-all duration-300">
         R$ 0,00
       </p>
     </div>
 
     <div class="grid grid-cols-2 gap-3">
-      <div class="bg-slate-800/60 rounded-lg p-3 text-center border border-slate-700/40">
-        <p class="text-[11px] font-medium uppercase tracking-wider text-slate-500 mb-0.5">Unitário</p>
-        <p id="unitario" class="text-sm font-semibold text-slate-200">R$ 0,00</p>
+      <div class="bg-slate-50 dark:bg-[#0d1117] rounded-lg p-3 text-center border border-slate-200 dark:border-[#2a3040]">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Unitário</p>
+        <p id="unitario" class="text-sm font-semibold text-slate-700 dark:text-slate-200">R$ 0,00</p>
       </div>
-      <div class="bg-slate-800/60 rounded-lg p-3 text-center border border-slate-700/40">
-        <p class="text-[11px] font-medium uppercase tracking-wider text-slate-500 mb-0.5">Área</p>
-        <p id="area" class="text-sm font-semibold text-slate-200">0,00 m²</p>
+      <div class="bg-slate-50 dark:bg-[#0d1117] rounded-lg p-3 text-center border border-slate-200 dark:border-[#2a3040]">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-0.5">Área</p>
+        <p id="area" class="text-sm font-semibold text-slate-700 dark:text-slate-200">0,00 m²</p>
       </div>
     </div>
 
     <div class="grid grid-cols-3 gap-3 pt-1">
       <button
         onclick="limpar()"
-        class="bg-red-500/15 text-red-400 border border-red-500/30 hover:bg-red-500/25 font-semibold py-3 rounded-xl text-sm
+        class="bg-red-50 dark:bg-red-500/15 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/30
+               hover:bg-red-100 dark:hover:bg-red-500/25 font-semibold py-3 rounded-xl text-sm
                transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-red-500/30"
       >
         Limpar
       </button>
       <button
         onclick="salvar()"
-        class="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25 font-semibold py-3 rounded-xl text-sm
+        class="bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30
+               hover:bg-emerald-100 dark:hover:bg-emerald-500/25 font-semibold py-3 rounded-xl text-sm
                transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
       >
         Salvar
       </button>
       <button
         onclick="enviar()"
-        class="bg-green-500/15 text-green-400 border border-green-500/30 hover:bg-green-500/25 font-semibold py-3 rounded-xl text-sm
+        class="bg-green-50 dark:bg-green-500/15 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-500/30
+               hover:bg-green-100 dark:hover:bg-green-500/25 font-semibold py-3 rounded-xl text-sm
                transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-green-500/30"
       >
         WhatsApp
@@ -278,16 +323,17 @@
 
     <button
       onclick="gerarPDF()"
-      class="w-full bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 font-semibold py-3 rounded-xl text-sm
-             transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+      class="w-full bg-gold-500/10 dark:bg-gold-500/15 text-gold-600 dark:text-gold-400 border border-gold-300 dark:border-gold-500/30
+             hover:bg-gold-500/20 dark:hover:bg-gold-500/25 font-semibold py-3 rounded-xl text-sm
+             transition-all duration-200 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-gold-500/30"
     >
       Gerar PDF
     </button>
   </section>
 
   <!-- Card: Histórico -->
-  <section class="bg-surface rounded-2xl border border-slate-700/50 p-5 space-y-3 fade-in">
-    <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+  <section class="bg-white dark:bg-[#1a1f2e] rounded-2xl border border-slate-200 dark:border-[#2a3040] p-5 space-y-3 fade-in">
+    <h3 class="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
       Histórico Recente
     </h3>
     <div id="lista" class="space-y-2 text-sm"></div>
@@ -295,7 +341,7 @@
 
   <!-- Footer -->
   <footer class="text-center pt-2 pb-4">
-    <p class="text-xs text-slate-600">Gráfica Master Print &mdash; Sistema de Orçamentos</p>
+    <p class="text-xs text-slate-400 dark:text-slate-600">Gráfica Master Print &mdash; Sistema de Orçamentos</p>
   </footer>
 
 </div>
@@ -303,6 +349,12 @@
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  html.classList.toggle('dark');
+  localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
 }
 
 let lista = JSON.parse(localStorage.getItem("orcamentos")) || [];
@@ -406,19 +458,19 @@ function limpar() {
 function render() {
   const container = document.getElementById("lista");
   if (lista.length === 0) {
-    container.innerHTML = '<p class="text-slate-500 text-sm italic">Nenhum orçamento salvo.</p>';
+    container.innerHTML = '<p class="text-slate-400 dark:text-slate-500 text-sm italic">Nenhum orçamento salvo.</p>';
     return;
   }
 
   let html = "";
   lista.slice(-5).reverse().forEach(o => {
     html += `
-      <div class="flex items-center justify-between bg-slate-800/60 border border-slate-700/30 rounded-lg px-4 py-3 hover:border-slate-600 transition-colors duration-150">
+      <div class="flex items-center justify-between bg-slate-50 dark:bg-[#0d1117] border border-slate-200 dark:border-[#2a3040]/50 rounded-lg px-4 py-3 hover:border-brand-400 dark:hover:border-brand-500/40 transition-colors duration-150">
         <div>
-          <p class="font-medium text-slate-200">${o.cliente || "Sem nome"}</p>
-          <p class="text-xs text-slate-500 mt-0.5">${o.data || ""}</p>
+          <p class="font-medium text-slate-700 dark:text-slate-200">${o.cliente || "Sem nome"}</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">${o.data || ""}</p>
         </div>
-        <span class="text-sm font-semibold text-brand-400">R$ ${o.total.toFixed(2).replace('.', ',')}</span>
+        <span class="text-sm font-semibold text-brand-600 dark:text-brand-400">R$ ${o.total.toFixed(2).replace('.', ',')}</span>
       </div>`;
   });
   container.innerHTML = html;
@@ -477,7 +529,6 @@ function gerarPDF() {
     doc.line(mx, yPos, pw - mx, yPos);
   }
 
-  // --- HEADER: Logo ---
   if (logoBase64) {
     const logoW = 60;
     const logoH = 20;
@@ -492,13 +543,11 @@ function gerarPDF() {
     y += 20;
   }
 
-  // --- Slogan ---
   doc.setFontSize(8);
   doc.setFont('helvetica', 'bolditalic');
   doc.text("TRANSFORMANDO SUAS IDEIAS EM PROJETOS DE QUALIDADE!", pw / 2, y, { align: 'center' });
   y += 6;
 
-  // --- Contato ---
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.text("WhatsApp: (33) 99813-9539   |   @gmasterprint", pw / 2, y, { align: 'center' });
@@ -509,7 +558,6 @@ function gerarPDF() {
   drawLine(y);
   y += 7;
 
-  // --- Dados do Cliente ---
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
   doc.text("Nome:", mx, y);
@@ -537,7 +585,6 @@ function gerarPDF() {
   drawLine(y);
   y += 2;
 
-  // --- Tabela: Cabeçalho ---
   const col1 = mx;
   const col2 = mx + 25;
   const col3 = pw - mx - 35;
@@ -554,14 +601,12 @@ function gerarPDF() {
   doc.setTextColor(0, 0, 0);
   y += rowH;
 
-  // --- Tabela: Linhas de item ---
   const r = window.resultado;
   const descricao = "Impressao " + r.largura + "cm x " + r.altura + "cm";
   const areaStr = "Area: " + r.area.toFixed(2) + " m2";
   const qtd = String(r.quantidade);
   const valorUnit = "R$ " + r.unitario.toFixed(2);
 
-  // Row 1
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
   doc.rect(mx, y, contentW, rowH * 2, 'S');
@@ -577,7 +622,6 @@ function gerarPDF() {
   doc.setTextColor(0);
   y += rowH;
 
-  // Empty rows to match comanda style
   for (let i = 0; i < 5; i++) {
     doc.rect(mx, y, contentW, rowH, 'S');
     doc.line(col2, y, col2, y + rowH);
@@ -585,7 +629,6 @@ function gerarPDF() {
     y += rowH;
   }
 
-  // --- TOTAL ---
   doc.setFillColor(40, 40, 40);
   doc.rect(mx, y, contentW, rowH + 2, 'F');
   doc.setTextColor(255, 255, 255);
@@ -600,7 +643,6 @@ function gerarPDF() {
   drawLine(y);
   y += 10;
 
-  // --- Rodapé ---
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
   doc.text("Master Print", mx, y);
