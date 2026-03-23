@@ -343,15 +343,38 @@ function salvar() {
 function enviar() {
   if (!window.resultado) return alert("Calcule primeiro");
 
+  const r = window.resultado;
   const tel = telefone.value.replace(/\D/g, '');
-  const msg =
-`Gráfica Master Print
+  const totalFmt = r.total.toFixed(2).replace('.', ',');
+  const unitFmt = r.unitario.toFixed(2).replace('.', ',');
+  const areaFmt = r.area.toFixed(2).replace('.', ',');
 
-Cliente: ${window.resultado.cliente}
-Total: R$ ${window.resultado.total.toFixed(2)}
-Unitário: R$ ${window.resultado.unitario.toFixed(2)}
-Área: ${window.resultado.area.toFixed(2)} m²
-Data: ${window.resultado.data}`;
+  const msg =
+`*GR\u00C1FICA MASTER PRINT*
+_Transformando suas ideias em projetos de qualidade!_
+
+\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+*OR\u00C7AMENTO*
+\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+*Cliente:* ${r.cliente || 'N\u00E3o informado'}
+*Data:* ${r.data}
+
+*Medidas:* ${r.largura}cm x ${r.altura}cm
+*\u00C1rea:* ${areaFmt} m\u00B2
+*Quantidade:* ${r.quantidade}
+
+\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+*VALORES*
+\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+\u2022 Unit\u00E1rio: *R$ ${unitFmt}*
+\u2022 *TOTAL: R$ ${totalFmt}*
+
+\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+R. Eli\u00E9ser Pena, 67, Centro - Pot\u00E9/MG
+WhatsApp: (33) 99813-9539
+Instagram: @gmasterprint`;
 
   const url = "https://wa.me/55" + tel + "?text=" + encodeURIComponent(msg);
   window.open(url);
