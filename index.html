@@ -106,6 +106,17 @@
                  focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
         >
       </div>
+
+      <div class="space-y-1.5 sm:col-span-2">
+        <label for="vendedor" class="block text-sm font-medium text-slate-400">Vendedor</label>
+        <input
+          type="text"
+          id="vendedor"
+          placeholder="Nome do vendedor"
+          class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-600 rounded-lg px-4 py-3 text-sm
+                 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 transition-all duration-200"
+        >
+      </div>
     </div>
   </section>
 
@@ -315,6 +326,7 @@ function calcular() {
   window.resultado = {
     cliente: cliente.value,
     telefone: telefone.value,
+    vendedor: vendedor.value,
     largura: parseFloat(largura.value) || 0,
     altura: parseFloat(altura.value) || 0,
     quantidade: q,
@@ -358,6 +370,7 @@ _Transformando suas ideias em projetos de qualidade!_
 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 
 *Cliente:* ${r.cliente || 'N\u00E3o informado'}
+*Vendedor:* ${r.vendedor || 'N\u00E3o informado'}
 *Data:* ${r.data}
 
 *Medidas:* ${r.largura}cm x ${r.altura}cm
@@ -513,6 +526,12 @@ function gerarPDF() {
   doc.text("Data:", pw / 2 + 10, y);
   doc.setFont('helvetica', 'normal');
   doc.text(window.resultado.data, pw / 2 + 24, y);
+
+  y += 7;
+  doc.setFont('helvetica', 'bold');
+  doc.text("Vendedor:", mx, y);
+  doc.setFont('helvetica', 'normal');
+  doc.text(window.resultado.vendedor || "Nao informado", mx + 26, y);
 
   y += 5;
   drawLine(y);
